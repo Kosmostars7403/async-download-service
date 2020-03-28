@@ -2,6 +2,7 @@
 .gitignore
 .DS_Store
 
+docker-compose.pycharm.yml
 docker-compose.dev.yml
 docker-compose.yml
 

@@ -22,16 +22,33 @@
 
 ## Как установить
 
-Для работы микросервиса нужен Python версии не ниже 3.6.
+Для работы микросервиса нужен Python версии не ниже 3.7.
 
 ```bash
 pip install -r requirements.txt
 ```
 
+
+## Настройки
+
+| Параметр | Переменная окружения | Описание | Значение по умолчанию 
+| ---- | ---- | ---- | ----
+|`--debug`|`ADS_DEBUG`|Будут выводиться отладочные сообщения. <br> Скрипт запустится с `logging.DEBUG` | False
+|`--delay`|`ADS_DELAY`|Задать задержку между <br> отправками порций архива в секундах. | 0
+|`--photo_path`|`ADS_PHOTO_PATH`| Абсолютный путь в котором <br> содержатся папки с фотографиями | `/app/test_photos`
+
+Параметры передаваемые в скрипт имеют приемущество перед переменными окружения
+
 ## Как запустить
 
 ```bash
 python server.py
+```
+
+или
+
+```bash
+python server.py --debug --delay 1 --photo_path /new/path/to/photos
 ```
 
 Сервер запустится на порту 8080, чтобы проверить его работу перейдите в браузере на страницу [http://127.0.0.1:8080/](http://127.0.0.1:8080/).
@@ -48,6 +65,40 @@ python server.py
 GET http://host.ru/archive/3bea29ccabbbf64bdebcc055319c5745/
 GET http://host.ru/archive/af1ad8c76fda2e48ea9aed2937e972ea/
 ```
+
+## Запустить в Docker Compose 
+* Убедитесь, что у вас установлен [Docker](https://www.docker.com/)
+
+Соберите образ
+```bash
+docker-compose build
+```
+
+И запустите сервис
+```bash
+ docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
+Если нужно изменить настройки, то самый простой/удобный способ - передать переменные окружения через файл
+
+создадим файл с настройками в корневой папке проекта
+```bash
+echo -e "ADS_DEBUG=true\nADS_PHOTO_PATH=/app/test_photos" > .env_ads
+``` 
+
+добавим ссылку на файл `.env_ads` в docker-compose.dev.yml
+```yaml
+version: '2'
+
+services:
+  web:
+    volumes:
+      - .:/app
+    env_file:
+      - .env_ads
+```
+
+
 
 # Цели проекта
 

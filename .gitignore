@@ -82,6 +82,10 @@ celerybeat-schedule
 # dotenv
 .env
 
+# project env
+.env_ads
+docker-compose.pycharm.yml
+
 # virtualenv
 .venv
 venv/
